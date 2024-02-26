@@ -1,0 +1,22 @@
+[2024-02-26T14:07:33.718+0000] {logging_mixin.py:150} INFO - Changing /opt/***/logs/dag_id=python_dag_with_context/run_id=scheduled__2024-01-20T00:30:00+00:00/task_id=print_current_date_with_conetxt permission to 509
+[2024-02-26T14:07:33.720+0000] {logging_mixin.py:150} INFO - Failed to change /opt/***/logs/dag_id=python_dag_with_context/run_id=scheduled__2024-01-20T00:30:00+00:00/task_id=print_current_date_with_conetxt permission to 509: [Errno 1] Operation not permitted: '/opt/***/logs/dag_id=python_dag_with_context/run_id=scheduled__2024-01-20T00:30:00+00:00/task_id=print_current_date_with_conetxt'
+[2024-02-26T14:07:33.848+0000] {logging_mixin.py:150} INFO - Changing /opt/***/logs/dag_id=python_dag_with_context/run_id=scheduled__2024-01-20T00:30:00+00:00/task_id=print_current_date_with_conetxt permission to 509
+[2024-02-26T14:07:33.849+0000] {logging_mixin.py:150} INFO - Failed to change /opt/***/logs/dag_id=python_dag_with_context/run_id=scheduled__2024-01-20T00:30:00+00:00/task_id=print_current_date_with_conetxt permission to 509: [Errno 1] Operation not permitted: '/opt/***/logs/dag_id=python_dag_with_context/run_id=scheduled__2024-01-20T00:30:00+00:00/task_id=print_current_date_with_conetxt'
+[2024-02-26T14:07:34.539+0000] {taskinstance.py:1103} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: python_dag_with_context.print_current_date_with_conetxt scheduled__2024-01-20T00:30:00+00:00 [queued]>
+[2024-02-26T14:07:34.604+0000] {taskinstance.py:1103} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: python_dag_with_context.print_current_date_with_conetxt scheduled__2024-01-20T00:30:00+00:00 [queued]>
+[2024-02-26T14:07:34.606+0000] {taskinstance.py:1308} INFO - Starting attempt 1 of 1
+[2024-02-26T14:07:34.681+0000] {taskinstance.py:1327} INFO - Executing <Task(PythonOperator): print_current_date_with_conetxt> on 2024-01-20 00:30:00+00:00
+[2024-02-26T14:07:34.714+0000] {standard_task_runner.py:57} INFO - Started process 640 to run task
+[2024-02-26T14:07:34.735+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'python_dag_with_context', 'print_current_date_with_conetxt', 'scheduled__2024-01-20T00:30:00+00:00', '--job-id', '40', '--raw', '--subdir', 'DAGS_FOLDER/03-python-operator-with-context.py', '--cfg-path', '/tmp/tmpbk86k61g']
+[2024-02-26T14:07:34.747+0000] {standard_task_runner.py:85} INFO - Job 40: Subtask print_current_date_with_conetxt
+[2024-02-26T14:07:35.003+0000] {logging_mixin.py:150} INFO - Changing /opt/***/logs/dag_id=python_dag_with_context/run_id=scheduled__2024-01-20T00:30:00+00:00/task_id=print_current_date_with_conetxt permission to 509
+[2024-02-26T14:07:35.003+0000] {logging_mixin.py:150} INFO - Failed to change /opt/***/logs/dag_id=python_dag_with_context/run_id=scheduled__2024-01-20T00:30:00+00:00/task_id=print_current_date_with_conetxt permission to 509: [Errno 1] Operation not permitted: '/opt/***/logs/dag_id=python_dag_with_context/run_id=scheduled__2024-01-20T00:30:00+00:00/task_id=print_current_date_with_conetxt'
+[2024-02-26T14:07:35.023+0000] {task_command.py:410} INFO - Running <TaskInstance: python_dag_with_context.print_current_date_with_conetxt scheduled__2024-01-20T00:30:00+00:00 [running]> on host 2fe49a870f57
+[2024-02-26T14:07:35.426+0000] {taskinstance.py:1547} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='heumsi' AIRFLOW_CTX_DAG_ID='python_dag_with_context' AIRFLOW_CTX_TASK_ID='print_current_date_with_conetxt' AIRFLOW_CTX_EXECUTION_DATE='2024-01-20T00:30:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2024-01-20T00:30:00+00:00'
+[2024-02-26T14:07:35.429+0000] {logging_mixin.py:150} INFO - execution_date: 2024-01-20
+[2024-02-26T14:07:35.430+0000] {logging_mixin.py:150} INFO - execution_date_nodash: 20240120
+[2024-02-26T14:07:35.431+0000] {logging_mixin.py:150} INFO - 2024-01-20는 토요일입니다.
+[2024-02-26T14:07:35.431+0000] {python.py:183} INFO - Done. Returned value was: None
+[2024-02-26T14:07:35.460+0000] {taskinstance.py:1350} INFO - Marking task as SUCCESS. dag_id=python_dag_with_context, task_id=print_current_date_with_conetxt, execution_date=20240120T003000, start_date=20240226T140734, end_date=20240226T140735
+[2024-02-26T14:07:35.562+0000] {local_task_job_runner.py:225} INFO - Task exited with return code 0
+[2024-02-26T14:07:35.610+0000] {taskinstance.py:2653} INFO - 0 downstream tasks scheduled from follow-on schedule check

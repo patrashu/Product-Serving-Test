@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "batch-serving"
+version = "0.1.0"
+description = ""
+authors = ["patrashu <qhdrmfdl123naver.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10, <3.12"
+apache-airflow-providers-google = "10.14.0"
+apache-airflow-providers-slack = "8.6.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
