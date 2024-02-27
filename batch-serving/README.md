@@ -39,7 +39,8 @@ poetry run airflow users create \
 ### Run Airflow WebServer
 
 ```pwsh
-poetry run airflow webserver --port 8080
+chmod -R u+rwx ${AIRFLOW_HOME}
+poetry run airflow webserver --port 8081
 ```
 
 ### Run Airflow Scheduler

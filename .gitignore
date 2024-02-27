@@ -2,3 +2,8 @@
 __pycache__
 .vscode
 airflow.db
+*.pid
+*/config
+*/plugins
+*/logs/
+logs/
