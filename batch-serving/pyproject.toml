@@ -7,6 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.10, <3.12"
+apache-airflow==2.6.3
 apache-airflow-providers-google = "10.14.0"
 apache-airflow-providers-slack = "8.6.0"
 

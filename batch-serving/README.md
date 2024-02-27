@@ -4,6 +4,7 @@
 
 ```pwsh
 pip install poetry
+poetry init
 poetry config virtualenvs.in-project true --local
 poetry run python --version  ## check version
 poetry install
@@ -47,9 +48,4 @@ poetry run airflow webserver --port 8081
 
 ```pwsh
 poetry run airflow scheduler
-```
-
-## Run with Docker compose
-```pwsh
-docker compose up -d
 ```
