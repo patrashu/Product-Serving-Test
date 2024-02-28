@@ -7,3 +7,4 @@ airflow.db
 */plugins
 */logs/
 logs/
+db.sqlite3
