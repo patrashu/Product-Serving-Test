@@ -17,6 +17,7 @@ OUTPUT_DIR = os.path.join(os.curdir, "output")
 default_args = {
     'owner': 'airflow',
     'start_date': datetime(2024, 2, 1),
+    'end_date': datetime(2024, 2, 5),
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
 }
@@ -39,6 +40,8 @@ def get_dataset() -> pd.DataFrame:
 #  model score 가 기존 score 보다 성능이 좋은 경우엔 모델을 저장하고, 그러지 않는 경우엔 패스하도록 합니다
 def train_model(start_date, **kwargs) -> str:
     # TODO: get_dataset 함수를 통해 다운받은 dataset 를 가져온 뒤, 모델을 학습합니다. (과제 1과 동일)
+    
+    dataset = kwargs["task_instance"].xcom_pull(task_ids="get_data_task")
     X = dataset.drop('target', axis=1).values
     y = dataset['target'].values
 
@@ -56,6 +59,18 @@ def train_model(start_date, **kwargs) -> str:
     # TODO:
     #  model score 가 기존 score 보다 성능이 좋은 경우엔 모델을 저장하고, 그렇지 않은 경우에는 저장하지 않고 end task 를 수행합니다.
     #  update_model_task 와 pass_task 를 활용합니다.
+    _model_paths = os.listdir(os.path.join(OUTPUT_DIR, "versions"))
+    print(_model_paths)
+    for _model_path in _model_paths:
+        _model = joblib.load(os.path.join(OUTPUT_DIR, "versions", _model_path))
+        _model.fit(X_train, y_train)
+        _score = _model.score(X_test, y_test)
+        print(f"- previous model score: {_score}")
+        
+        if score >= _score:
+            return update_model_task.task_id
+        else:
+            return end.task_id
 
 
 def update_model(start_date):
@@ -74,10 +89,11 @@ with DAG(
         schedule_interval="30 0 * * * ",
         catchup=True,
         tags=['assignment'],
+        on_success_callback=task_succ_slack_alert,
 ) as dag:
     execution_date = "{{ ds_nodash }}"  # Template 정의
 
-    end = EmptyOperator(task_id="end")
+    end = EmptyOperator(task_id="pass_model_task")
 
     get_data_task = PythonOperator(
         task_id="get_data_task",
@@ -86,9 +102,13 @@ with DAG(
 
     # TODO: train_model 함수와 BranchPythonOperator를 활용하여 task 를 완성합니다
     #  model score 가 기존 score 보다 성능이 좋은 경우엔 모델을 저장하고, 그러지 않는 경우엔 패스하도록 합니다
+    # TODO: task 를 완성하시오.
     train_model_task = BranchPythonOperator(
         task_id="train_model_task",
-        # TODO: task 를 완성하시오.
+        python_callable=train_model,
+        op_kwargs={
+            'start_date': execution_date,
+        }
     )
 
     update_model_task = PythonOperator(
@@ -98,6 +118,6 @@ with DAG(
             'start_date': execution_date,
         }
     )
-
+    
     # TODO 3. 모델 저장에 성공한 경우 슬랙 알림을 전송하도록 코드를 완성합니다
-    get_data_task >> ...
+    get_data_task >> train_model_task >> [update_model_task, end]

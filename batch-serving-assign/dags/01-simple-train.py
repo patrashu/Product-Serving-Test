@@ -18,6 +18,7 @@ OUTPUT_DIR = os.path.join(os.curdir, "output")
 default_args = {
     'owner': 'airflow',
     'start_date': datetime(2024, 2, 1),
+    'end_date': datetime(2024, 2, 5),
     'retries': 1,
     'retry_delay': timedelta(minutes=5),
 }
@@ -33,13 +34,16 @@ def get_dataset() -> pd.DataFrame:
     dataset = pd.DataFrame(data, columns=feature_names)
     dataset['target'] = target
 
+    # return 값이 Xcom이라는 곳에 Key:value 형태로 저장됨.
     return dataset
 
 
 # TODO 1. train_model 함수를 완성합니다. train_model 을 통해 학습한 모델을 로컬 경로에 저장하게 됩니다.
+# TODO: get_dataset 함수를 통해 다운받은 dataset 를 가져온 뒤, 모델을 학습합니다.
 def train_model(start_date, **kwargs) -> str:
-    # TODO: get_dataset 함수를 통해 다운받은 dataset 를 가져온 뒤, 모델을 학습합니다.
-    ``` your code ```
+    print(kwargs["task_instance"])
+    # xcom.pull => 이전에 실행되었던 Operator에서의 return 값을 받아옴
+    dataset = kwargs["task_instance"].xcom_pull(task_ids="get_data_task")
     X = dataset.drop('target', axis=1).values
     y = dataset['target'].values
 
@@ -53,21 +57,25 @@ def train_model(start_date, **kwargs) -> str:
 
     # TODO: 주어진 경로에 모델의 각 실행 버전을 나누어 저장합니다.
     # TODO: 저장된 모델의 경로를 반환합니다.
-    ``` your code ```
+    os.makedirs(os.path.join(OUTPUT_DIR, "versions"), exist_ok=True)
+    
+    timestamp = datetime.now().strftime("%H")
+    model_path = os.path.join(OUTPUT_DIR, "versions", f"model_{start_date}{timestamp}.joblib")
+    joblib.dump(model, model_path)
 
     return model_path
 
 
 # TODO 2. 모델을 학습하는 DAG를 완성합니다. 주어진 함수 두 개를 활용합니다.
-with (
-    # TODO: 슬랙을 통해 DAG 실패 알람을 받습니다.
-    DAG(
-        dag_id='01-simple-train',
-        default_args=default_args,
-        schedule_interval="30 0 * * * ",
-        catchup=True,
-        tags=['assignment'],
-) as dag):
+# TODO: 슬랙을 통해 DAG 실패 알람을 받습니다.
+with DAG(
+    dag_id='01-simple-train',
+    default_args=default_args,
+    schedule_interval="30 0 * * * ",
+    catchup=True,
+    tags=['assignment'],
+    on_failure_callback=task_fail_slack_alert
+) as dag:
     execution_date = "{{ ds_nodash }}"
 
     get_data_task = PythonOperator(

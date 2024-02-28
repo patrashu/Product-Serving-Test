@@ -8,3 +8,5 @@ airflow.db
 */logs/
 logs/
 db.sqlite3
+data
+.env
