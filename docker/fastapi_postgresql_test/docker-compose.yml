@@ -1,0 +1,31 @@
+version: "3.0"
+
+services:
+  fastapi_test:
+    build: ./fastapi/
+    image: fastapi_test:latest
+    container_name: fastapi_test
+    ports:
+    - 8000:8000
+    volumes: 
+    - test_volume:/code
+    depends_on:
+    - postgres_db
+
+  postgres_db:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+    - 5432:5432
+    volumes:
+    - test_volume_db:/var/lib/postgresql/data
+
+volumes:
+  test_volume:
+    driver: local
+  test_volume_db:
+    driver: local
